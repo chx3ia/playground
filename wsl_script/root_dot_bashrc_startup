@@ -1,0 +1,22 @@
+#
+# A startup bash script for initializing ordinary services. Please rename this 
+# file as .bash_startup and add the follow scripts to your .bashrc
+#    if [ -f ~/.bash_startup ]; then
+#      . ~/.bash_startup
+#    fi
+#
+eth0_ip=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
+
+# when boots up, WSL's eth0 has a ip starting with 172.X.Y.Z
+if echo "$eth0_ip" | { IFS=. read a b c d e; test "$a" -ne 172 && test -z "$e"; }; then
+  echo "eth0: $eth0_ip"
+else
+  echo "Reset the IP from WSL and renew a new one by dhclient"
+  ip addr flush dev eth0
+  dhclient eth0
+  service ssh start
+  service docker start
+
+# append a Google nameserver to the default nameserver
+  echo "nameserver 8.8.8.8"  >> /etc/resolv.conf
+fi
