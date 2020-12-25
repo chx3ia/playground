@@ -1,5 +1,9 @@
 <#
   A PowerShell script to make port fordwarding from host to WSL.   
+  Credits to:
+    http://woshub.com/port-forwarding-in-windows/
+    https://support.microsoft.com/en-za/help/929851/the-default-dynamic-port-range-for-tcp-ip-has-changed-in-windows-vista
+    https://github.com/microsoft/WSL/issues/4150#issuecomment-504209723
 #>
 if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
 {   
